@@ -1,0 +1,27 @@
+{
+    "name": "shanerbaner82/panel-roles",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Shanerbaner82\\PanelRoles\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SD Rosenthal",
+            "email": "srosenthal82@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "filament/support": "^3.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Shanerbaner82\\PanelRoles\\PanelRolesServiceProvider"
+            ]
+        }
+    }
+}
