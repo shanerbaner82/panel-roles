@@ -27,7 +27,10 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ... 
-            ->plugin(PanelRoles::make()->role('admin'))
+            ->plugin(PanelRoles::make()
+                ->roleToAssign('developer')
+                ->restrictedRoles(['admin', 'developer']),
+            )
     }
 }
 ```
