@@ -5,13 +5,11 @@ namespace Shanerbaner82\PanelRoles;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Illuminate\Support\Facades\Event;
-use Shanerbaner82\PanelRoles\listeners\AssignRoleListener;
-use Spatie\Permission\Exceptions\RoleDoesNotExist;
-use Spatie\Permission\Models\Role;
 
 class PanelRoles implements Plugin
 {
-    protected string $role;
+    protected string $assignableRole;
+    protected array $restrictedRoles;
 
     public static function make(): PanelRoles
     {
@@ -19,15 +17,26 @@ class PanelRoles implements Plugin
         return new PanelRoles();
     }
 
-    public function role(string $role): static
+    public function roleToAssign(string $role): static
     {
-        $this->role = $role;
+        $this->assignableRole = $role;
         return $this;
     }
 
-    public function getRole(): string
+    public function restrictedRoles(array $roles): static
     {
-        return $this->role;
+        $this->restrictedRoles = $roles;
+        return $this;
+    }
+
+    public function getRoleToAssign(): string
+    {
+        return $this->assignableRole;
+    }
+
+    public function getRestrictedRoles(): array
+    {
+        return $this->restrictedRoles;
     }
 
     public function getId(): string
@@ -39,7 +48,7 @@ class PanelRoles implements Plugin
     {
         $panel->authMiddleware(
             [
-                'role:'. $this->role
+                'role:'. implode('|', $this->getRestrictedRoles())
             ]
         );
     }
@@ -49,7 +58,7 @@ class PanelRoles implements Plugin
         Event::listen(
             \Illuminate\Auth\Events\Registered::class,
             function($event){
-                $role = \Spatie\Permission\Models\Role::firstOrCreate(['name' => $this->role]);
+                $role = \Spatie\Permission\Models\Role::firstOrCreate(['name' => $this->getRoleToAssign()]);
                 $event->user->assignRole($role);
             }
         );

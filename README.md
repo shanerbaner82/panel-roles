@@ -15,7 +15,6 @@ the minimum setup required is to:
 1. Install Spatie's package
 2. Add the [RoleMiddleware](https://spatie.be/docs/laravel-permission/v5/basic-usage/middleware) to your`app/Http/Kernel.php`
 
-
 ### Usage
 Inside any of your Filament panels add the Panel Roles plugin and specify the role users will be assigned and must have in order to login.
 
